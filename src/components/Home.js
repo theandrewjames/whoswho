@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Route, Link, ReactDOM} from 'react-router-dom'
 import fetchFromSpotify, { request } from '../services/api'
 
 const AUTH_ENDPOINT =
@@ -7,6 +8,9 @@ const TOKEN_KEY = 'whos-who-access-token'
 
 const Home = () => {
   const [genres, setGenres] = useState([])
+  const [numSongs, setNumSongs] = useState(1)
+  const [numArtists, setNumArtists] = useState(2)
+  const[songs, setSongs] = useState([])
   const [selectedGenre, setSelectedGenre] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
   const [configLoading, setConfigLoading] = useState(false)
@@ -18,10 +22,38 @@ const Home = () => {
       token: t,
       endpoint: 'recommendations/available-genre-seeds'
     })
-    console.log(response)
+    //console.log(response)
     setGenres(response.genres)
-    setConfigLoading(false)
+    setConfigLoading(false);
+   
   }
+  const loadSongsArtists = async t => {
+    setConfigLoading(true)
+    const response = await fetchFromSpotify({
+      token: token,
+      endpoint: "search?type=track&limit=10&q=genre:" + selectedGenre
+    })
+    //console.log(response)
+    .then(response => {
+      const songArray = []
+      for(let i = 0;i < response.tracks.items.length;i++) {
+        songArray.push(
+          {
+          artist: response.tracks.items[i].artists[0].name,
+          song: response.tracks.items[i].name,
+          image: response.tracks.items[i].album.images[0].url,
+          previewUrl : response.tracks.items[i].preview_url
+        })
+      }
+      setSongs(songArray)
+      setConfigLoading(false)
+    })
+  }
+  
+  //To see songs useState uncomment
+  // useEffect(() => {
+  //   console.log(songs);
+  // }, [songs]);
 
   useEffect(() => {
     setAuthLoading(true)
@@ -67,6 +99,19 @@ const Home = () => {
             {genre}
           </option>
         ))}
+      </select>
+      <button onClick={loadSongsArtists}>submit</button>
+      # songs: 
+      <select value={numSongs} onChange={e => setNumSongs(e.target.value)}>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      </select>
+      # artists
+      <select value={numArtists} onChange={e => setNumArtists(e.target.value)}>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
       </select>
     </div>
   )
