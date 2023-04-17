@@ -11,6 +11,9 @@ const Home = () => {
   const [authLoading, setAuthLoading] = useState(false)
   const [configLoading, setConfigLoading] = useState(false)
   const [token, setToken] = useState('')
+  const [noOfSongs, setNoOfSongs ] = useState(1)
+  const [noOfArtists, setNoOfArtist ] = useState(2)
+  const [errMsg, setErrMsg] = useState('')
 
   const loadGenres = async t => {
     setConfigLoading(true)
@@ -50,11 +53,27 @@ const Home = () => {
     })
   }, [])
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if(!selectedGenre){
+      setErrMsg('Please select a genre')
+      return;
+    }
+    
+    setErrMsg('')
+    console.log("I was clicked")
+    console.log(selectedGenre)
+    console.log(noOfSongs)
+    console.log(noOfArtists)
+  }
+
   if (authLoading || configLoading) {
     return <div>Loading...</div>
   }
 
   return (
+    <>
     <div>
       Genre:
       <select
@@ -69,6 +88,33 @@ const Home = () => {
         ))}
       </select>
     </div>
+    <div>
+      # of Songs:
+      <select
+        value={noOfSongs}
+        onChange={event => setNoOfSongs(Number(event.target.value))}
+      >
+        <option value={1}>1</option>
+        <option value={2}>2</option>
+        <option value={3}>3</option>
+      </select>
+    </div>
+    <div>
+      # of Artists:
+      <select
+        value={noOfArtists}
+        onChange={event => setNoOfArtist(Number(event.target.value))}
+      >
+        <option value={2}>2</option>
+        <option value={3}>3</option>
+        <option value={4}>4</option>
+      </select>
+    </div>
+    <div>
+      <p>{errMsg}</p>
+      <button onClick={(e) => handleSubmit(e)}>Submit</button>
+    </div>
+    </>
   )
 }
 
