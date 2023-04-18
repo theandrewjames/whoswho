@@ -9,8 +9,6 @@ const TOKEN_KEY = 'whos-who-access-token'
 
 const Home = () => {
   const [genres, setGenres] = useState([])
-  const [numSongs, setNumSongs] = useState(1)
-  const [numArtists, setNumArtists] = useState(2)
   const [songs, setSongs] = useState([])
   const [selectedGenre, setSelectedGenre] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
@@ -27,7 +25,7 @@ const Home = () => {
       token: t,
       endpoint: 'recommendations/available-genre-seeds'
     })
-    console.log(response)
+    //console.log(response)
     setGenres(response.genres)
     setConfigLoading(false);
 

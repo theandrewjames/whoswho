@@ -67,12 +67,14 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                     <div
                         draggable
                         onDragStart={(e) => {
-                            setCurrentSong(song)
+                            setCurrentSong(song.previewUrl)
+                            //console.log("this is current song", currentSong) not the same song
                             dragStarted(e, index)
                         }}
                         style={{ borderStyle: 'solid', borderColor: 'red' }}>
                         <button onClick={() => {
-                            setCurrentSong(song);
+                            setCurrentSong(song.previewUrl);
+                            console.log("this is current song", song)
                             const thisSound = new Howl({
                                 src: [song.previewUrl],
                                 html5: true,
@@ -112,7 +114,33 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                     {droppedDivs.map((div, index) => {
                         return (
                             <div>
-                                {div.song}
+                                <>
+                                    <div
+                                        key={index}
+                                        style={{ borderStyle: 'solid', borderColor: 'red' }}>
+                                        <button onClick={() => {
+                                            // setCurrentSong(song);
+                                            //console.log(div)
+                                            const thisSound = new Howl({
+                                                src: [div.song],
+                                                html5: true,
+                                                preload: true,
+                                            })
+                                            setThisHowl(thisSound);
+                                            thisSound.play()
+                                        }}>
+                                            <FontAwesomeIcon key={index} icon={faCirclePlay} />
+                                        </button>
+
+                                        <button onClick={() => {
+                                            console.log("I was clicked")
+                                            thisHowl.pause()
+                                        }}>
+                                            <FontAwesomeIcon icon={faCirclePause} />
+                                        </button>
+                                    </div>
+
+                                </>
                             </div>
                         )
                     })}
