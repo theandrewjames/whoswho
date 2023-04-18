@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Route, Link, ReactDOM} from 'react-router-dom'
+import { Route, Link, ReactDOM } from 'react-router-dom'
 import fetchFromSpotify, { request } from '../services/api'
 import Game from './Game';
 
@@ -11,14 +11,15 @@ const Home = () => {
   const [genres, setGenres] = useState([])
   const [numSongs, setNumSongs] = useState(1)
   const [numArtists, setNumArtists] = useState(2)
-  const[songs, setSongs] = useState([])
+  const [songs, setSongs] = useState([])
   const [selectedGenre, setSelectedGenre] = useState('')
   const [authLoading, setAuthLoading] = useState(false)
   const [configLoading, setConfigLoading] = useState(false)
   const [token, setToken] = useState('')
-  const [noOfSongs, setNoOfSongs ] = useState(1)
-  const [noOfArtists, setNoOfArtist ] = useState(2)
+  const [noOfSongs, setNoOfSongs] = useState(1)
+  const [noOfArtists, setNoOfArtist] = useState(2)
   const [errMsg, setErrMsg] = useState('')
+  const [submit, setSubmit] = useState(false)
 
   const loadGenres = async t => {
     setConfigLoading(true)
@@ -29,7 +30,7 @@ const Home = () => {
     //console.log(response)
     setGenres(response.genres)
     setConfigLoading(false);
-   
+
   }
   const loadSongsArtists = async t => {
     setConfigLoading(true)
@@ -37,23 +38,23 @@ const Home = () => {
       token: token,
       endpoint: "search?type=track&limit=10&q=genre:" + selectedGenre
     })
-    //console.log(response)
-    .then(response => {
-      const songArray = []
-      for(let i = 0;i < response.tracks.items.length;i++) { //length = noOfSongs?
-        songArray.push(
-          {
-          artist: response.tracks.items[i].artists[0].name,
-          song: response.tracks.items[i].name,
-          image: response.tracks.items[i].album.images[0].url,
-          previewUrl : response.tracks.items[i].preview_url
-        })
-      }
-      setSongs(songArray)
-      setConfigLoading(false)
-    })
+      .then(response => {
+        console.log(response)
+        const songArray = []
+        for (let i = 0; i < response.tracks.items.length; i++) { 
+          songArray.push(
+            {
+              artist: response.tracks.items[i].artists[0].name,
+              song: response.tracks.items[i].name,
+              image: response.tracks.items[i].album.images[0].url,
+              previewUrl: response.tracks.items[i].preview_url
+            })
+        }
+        setSongs(songArray)
+        setConfigLoading(false)
+      })
   }
-  
+
   //To see songs useState uncomment
   // useEffect(() => {
   //   console.log(songs);
@@ -89,7 +90,7 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(!selectedGenre){
+    if (!selectedGenre) {
       setErrMsg('Please select a genre')
       return;
     }
@@ -97,11 +98,8 @@ const Home = () => {
     setErrMsg('')
     console.log("I was clicked")
     loadSongsArtists()
-    // const props = {
-    //   selectedGenre,
-    //   noOfSongs,
-    //   noOfArtists
-    // }
+    setSubmit(true)
+    console.log(noOfArtists)
   }
 
   if (authLoading || configLoading) {
@@ -110,63 +108,102 @@ const Home = () => {
 
   return (
     <>
-    <div>
-      Genre:
-      <select
-        value={selectedGenre}
-        onChange={event => setSelectedGenre(event.target.value)}
-      >
-        <option value='' />
-        {genres.map(genre => (
-          <option key={genre} value={genre}>
-            {genre}
-          </option>
-        ))}
-      </select>
-      {/* <button onClick={loadSongsArtists}>submit</button>
-      # songs: 
-      <select value={numSongs} onChange={e => setNumSongs(e.target.value)}>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      </select>
-      # artists
-      <select value={numArtists} onChange={e => setNumArtists(e.target.value)}>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      </select> */}
-    </div>
-    <div>
-      # of Songs:
-      <select
-        value={noOfSongs}
-        onChange={event => setNoOfSongs(Number(event.target.value))}
-      >
-        <option value={1}>1</option>
-        <option value={2}>2</option>
-        <option value={3}>3</option>
-      </select>
-    </div>
-    <div>
-      # of Artists:
-      <select
-        value={noOfArtists}
-        onChange={event => setNoOfArtist(Number(event.target.value))}
-      >
-        <option value={2}>2</option>
-        <option value={3}>3</option>
-        <option value={4}>4</option>
-      </select>
-    </div>
-    <div>
-      <p>{errMsg}</p>
-      <button onClick={(e) => handleSubmit(e)}>Submit</button>
-    </div>
+      <div>
+          <div>
+            Genre:
+            <select
+              value={selectedGenre}
+              onChange={event => setSelectedGenre(event.target.value)}
+            >
+              <option value='' />
+              {genres.map(genre => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+            </select>
+            
+          </div>
+          <div>
+            # of Songs:
+            <select
+              value={noOfSongs}
+              onChange={event => setNoOfSongs(Number(event.target.value))}
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+            </select>
+          </div>
+          <div>
+            # of Artists:
+            <select
+              value={noOfArtists}
+              onChange={event => setNoOfArtist(Number(event.target.value))}
+            >
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+            </select>
+          </div>
+          <div>
+            <p>{errMsg}</p>
+            <button onClick={(e) => handleSubmit(e)}>Submit</button>
+          </div>
+        </div>
+        <div>
+          <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists} />
+        </div>
+      {/* {submit ? (
+        <div>
+          <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists} />
+        </div>
+      ) : (
+        <div>
+          <div>
+            Genre:
+            <select
+              value={selectedGenre}
+              onChange={event => setSelectedGenre(event.target.value)}
+            >
+              <option value='' />
+              {genres.map(genre => (
+                <option key={genre} value={genre}>
+                  {genre}
+                </option>
+              ))}
+            </select>
+            
+          </div>
+          <div>
+            # of Songs:
+            <select
+              value={noOfSongs}
+              onChange={event => setNoOfSongs(Number(event.target.value))}
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+            </select>
+          </div>
+          <div>
+            # of Artists:
+            <select
+              value={noOfArtists}
+              onChange={event => setNoOfArtist(Number(event.target.value))}
+            >
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+              <option value={4}>4</option>
+            </select>
+          </div>
+          <div>
+            <p>{errMsg}</p>
+            <button onClick={(e) => handleSubmit(e)}>Submit</button>
+          </div>
+        </div>
+      )} */}
 
-    <div>
-      <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists}/>
-    </div>
     </>
   )
 }

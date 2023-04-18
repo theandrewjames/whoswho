@@ -3,7 +3,15 @@ import { Howl, Howler } from 'howler';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faCirclePause } from '@fortawesome/free-solid-svg-icons';
 const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
+
+    //console.log(noOfArtists)
     const copyArr = [...songs];
+    const [currentSong, setCurrentSong] = useState('');
+    const [thisHowl, setThisHowl] = useState({});
+    const [droppedDivs, setDroppedDivs] = useState([{
+        divId: null,
+        song: ''
+    }]);
 
     // const freqCounter = (copyArr) => {
     //     let freqCount = {};
@@ -34,34 +42,78 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
     // }
 
     //console.log("This is copyOf Before: ", copyArr);
-    const [thisHowl, setThisHowl] = useState({})
-    console.log(selectedGenre)
-    console.log(noOfSongs)
-    console.log(noOfArtists)
 
-    const randomArr = [];
+    const randomSongs = [];
     let randomSong;
-    for (let i =0; i < noOfArtists; i++){
+    for (let i = 0; i < noOfArtists; i++) {
         randomSong = copyArr[Math.floor(copyArr.length * Math.random())];
         let index = copyArr.indexOf(randomSong);
-        randomArr.push(randomSong);
+        randomSongs.push(randomSong);
         copyArr.splice(index, 1);
     }
-    console.log("This is random Arr: ", randomArr);
 
+    const randomImgs = [];
+    const copyOfRandomSongs = [...randomSongs]
+    let randomImg;
+    for (let i = 0; i < copyOfRandomSongs.length; i++) {
+        randomImg = copyOfRandomSongs[Math.floor(copyOfRandomSongs.length * Math.random())];
+        // let index = copyArr.indexOf(randomImg);
+        // copyOfRandomSongs.splice(index, 1);
+        //randomImgs.push(randomImg.image);
+        randomImgs.push(randomImg);
+    }
+
+    // console.log("This is random songs: ", randomSongs);
+    // console.log("This is random imgs: ", randomImgs);
+
+    const dragStarted = (e, index) => {
+        console.log(`drag has started for index: ${index}`)
+        e.dataTransfer.setData('song-index', index)
+    }
+
+    const dragOver = (e) => {
+        e.preventDefault();
+
+        console.log('dragging over now')
+    }
+
+    const dragDropped = (e) => {
+        console.log('div is dropped')
+        let transferedDiv = e.dataTransfer.getData('song-index')
+
+        // let div = {
+        //     divId: transferedDiv,
+        //     song: currentSong
+        // }
+
+        setDroppedDivs([...droppedDivs, {
+            divId: transferedDiv,
+            song: currentSong
+        }])
+        console.log(currentSong)
+        console.log(transferedDiv)
+        console.log(droppedDivs)
+    }
 
     // localStorage.setItem("selectedGenre", JSON.stringify(selectedGenre))
     // localStorage.setItem("noOfSongs", noOfSongs)
     // localStorage.setItem("noOfArtists", noOfArtists)
 
+
     return (
         <div>
             <h3>Game Page</h3>
-            {songs.map((song, index) => (
-                <>
-
-                    <div>
+            {randomSongs.map((song, index) => (
+                <div style={{ width: '400px' }}>
+                    <div
+                        draggable
+                        onDragStart={(e) => {
+                            setCurrentSong(song)
+                            dragStarted(e, index)
+                        }}
+                        style={{ borderStyle: 'solid', borderColor: 'red' }}>
                         <button onClick={() => {
+                            setCurrentSong(song);
                             const thisSound = new Howl({
                                 src: [song.previewUrl],
                                 html5: true,
@@ -81,34 +133,66 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                         </button>
                     </div>
 
+
                     {/* <div>
                         <img src={song.image} alt={`${song.artist} image`}/>
                     </div> */}
 
-                </>
+                </div>
 
             ))}
-            {/* {songsArr.map((song, index) => (
-                <div key={index}>
-                    <button onClick={() => {
-                        const thisSound = new Howl({
-                            src: [song],
-                            html5: true,
-                            preload: true,
-                        })
-                        setThisHowl(thisSound);
-                        thisSound.play()
-                    }}>
-                        <FontAwesomeIcon icon={faCirclePlay} />
-                    </button>
 
-                    <button onClick={() => {
-                        console.log("I was clicked")
-                        thisHowl.pause()
-                    }}>
-                        <FontAwesomeIcon icon={faCirclePause} />
-                    </button>
+            <div>
+                <h3>Artists</h3>
+                <div
+                    droppable='true'
+                    onDragOver={(e) => dragOver(e)}
+                    onDrop={(e) => dragDropped(e)}
+                    style={{ height: '800px', width: '400px', borderStyle: 'solid', borderColor: 'black' }}>
+
+
+                    {/* {droppedDivs.map((div, i) => {
+
+                    } )} */}
                 </div>
+            </div>
+
+            {/* {songs.map((song, index) => (
+                <div style={{width: '400px'}}>
+
+                    <div 
+                    draggable 
+                    onDragStart={(e) => dragStarted(e, index)}
+                    style={{ borderStyle: 'solid', borderColor: 'red'}}>
+                        <button onClick={() => {
+                            setCurrentSong(song);
+                            const thisSound = new Howl({
+                                src: [song.previewUrl],
+                                html5: true,
+                                preload: true,
+                            })
+                            setThisHowl(thisSound);
+                            thisSound.play()
+                        }}>
+                            <FontAwesomeIcon key={index} icon={faCirclePlay} />
+                        </button>
+
+                        <button onClick={() => {
+                            console.log("I was clicked")
+                            thisHowl.pause()
+                        }}>
+                            <FontAwesomeIcon icon={faCirclePause} />
+                        </button>
+                    </div>
+
+
+                    <div>
+                        <img src={song.image} alt={`${song.artist} image`}/>
+                    </div>
+
+                 </div>
+
+                
 
             ))} */}
 
