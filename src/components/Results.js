@@ -1,14 +1,22 @@
 import { Fragment } from "react";
 import React from 'react';
 import { Link, ReactDOM } from "react-router-dom";
+import GaugeChart from 'react-gauge-chart'
 
+const chartStyle = {
+    width: 400,
+  }
 const Results = () => {
     return(
         <div>
-            <h1>Results page</h1>
-            <p>display results here</p>
+            <h1>You scored</h1>
+            <GaugeChart id="gauge-chart1" 
+            textColor="black"
+            style={chartStyle}
+            colors={['#FF0000', '#FFFF00', '#00FF00']}
+            />
             <Link to='/'>
-                <button>Return home</button>
+                <button>Home</button>
             </Link>
             
         </div>
