@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import fetchFromSpotify, { request } from '../services/api'
+import Game from './Game';
 
 const AUTH_ENDPOINT =
   'https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token'
@@ -60,12 +61,14 @@ const Home = () => {
       setErrMsg('Please select a genre')
       return;
     }
-    
+
     setErrMsg('')
     console.log("I was clicked")
-    console.log(selectedGenre)
-    console.log(noOfSongs)
-    console.log(noOfArtists)
+    // const props = {
+    //   selectedGenre,
+    //   noOfSongs,
+    //   noOfArtists
+    // }
   }
 
   if (authLoading || configLoading) {
@@ -113,6 +116,10 @@ const Home = () => {
     <div>
       <p>{errMsg}</p>
       <button onClick={(e) => handleSubmit(e)}>Submit</button>
+    </div>
+
+    <div>
+      <Game selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists}/>
     </div>
     </>
   )
