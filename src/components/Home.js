@@ -27,7 +27,7 @@ const Home = () => {
       token: t,
       endpoint: 'recommendations/available-genre-seeds'
     })
-    //console.log(response)
+    console.log(response)
     setGenres(response.genres)
     setConfigLoading(false);
 
@@ -39,7 +39,7 @@ const Home = () => {
       endpoint: "search?type=track&limit=10&q=genre:" + selectedGenre
     })
       .then(response => {
-        console.log(response)
+        //console.log(response)
         const songArray = []
         for (let i = 0; i < response.tracks.items.length; i++) { 
           songArray.push(
@@ -96,10 +96,8 @@ const Home = () => {
     }
 
     setErrMsg('')
-    console.log("I was clicked")
     loadSongsArtists()
     setSubmit(true)
-    console.log(noOfArtists)
   }
 
   if (authLoading || configLoading) {
@@ -108,53 +106,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
-          <div>
-            Genre:
-            <select
-              value={selectedGenre}
-              onChange={event => setSelectedGenre(event.target.value)}
-            >
-              <option value='' />
-              {genres.map(genre => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-            
-          </div>
-          <div>
-            # of Songs:
-            <select
-              value={noOfSongs}
-              onChange={event => setNoOfSongs(Number(event.target.value))}
-            >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-            </select>
-          </div>
-          <div>
-            # of Artists:
-            <select
-              value={noOfArtists}
-              onChange={event => setNoOfArtist(Number(event.target.value))}
-            >
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-            </select>
-          </div>
-          <div>
-            <p>{errMsg}</p>
-            <button onClick={(e) => handleSubmit(e)}>Submit</button>
-          </div>
-        </div>
-        <div>
-          <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists} />
-        </div>
-      {/* {submit ? (
+      {submit ? (
         <div>
           <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists} />
         </div>
@@ -202,7 +154,7 @@ const Home = () => {
             <button onClick={(e) => handleSubmit(e)}>Submit</button>
           </div>
         </div>
-      )} */}
+      )}
 
     </>
   )
