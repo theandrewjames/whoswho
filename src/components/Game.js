@@ -14,30 +14,6 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
         const newFilteredSongs = songs.sort((a, b) => 0.5 - Math.random()).slice(0, 4);
         setFilteredSongs(newFilteredSongs);
       }
-    
-    // const randomSongs = [];
-    // let randomSong;
-    // for (let i = 0; i < noOfArtists; i++) {
-    //     randomSong = copyArr[Math.floor(copyArr.length * Math.random())];
-    //     let index = copyArr.indexOf(randomSong);
-    //     randomSongs.push(randomSong);
-    //     copyArr.splice(index, 1);
-    // }
-    //console.log("This is random songs: ", randomSongs);
-
-    // const randomImgs = randomSongs.map((s) => s.image)
-    // const randomImgs = [];
-    // const copyOfRandomSongs = [...randomSongs]
-    // let randomImg;
-    // for (let i = 0; i < copyOfRandomSongs.length; i++) {
-    //     randomImg = copyOfRandomSongs[Math.floor(copyOfRandomSongs.length * Math.random())];
-    //     // let index = copyArr.indexOf(randomImg);
-    //     // copyOfRandomSongs.splice(index, 1);
-    //     //randomImgs.push(randomImg.image);
-    //     randomImgs.push(randomImg);
-    // }
-    //console.log("This is random imgs: ", randomImgs);
-
 
     const dragStarted = (e, index) => {
         console.log(`drag has started for index: ${index}`)
@@ -63,8 +39,6 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
     // localStorage.setItem("selectedGenre", JSON.stringify(selectedGenre))
     // localStorage.setItem("noOfSongs", noOfSongs)
     // localStorage.setItem("noOfArtists", noOfArtists)
-
-
     return (
         <div>
             <h3>Game Page</h3>
@@ -100,7 +74,11 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                         }}>
                             <FontAwesomeIcon icon={faCirclePause} />
                         </button>
-                        <label>{song.song}</label>
+                        {filteredSongs.slice(0, noOfArtists).map((artist, idx) => {
+                            return(
+                                <button>{artist.artist}</button>
+                            )
+                        })}
                     </div>
 
                 </div>
