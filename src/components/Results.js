@@ -1,17 +1,33 @@
 import { Fragment } from "react";
 import React from 'react';
-import { Link, ReactDOM } from "react-router-dom";
+import { Link, ReactDOM, useLocation} from "react-router-dom";
 import GaugeChart from 'react-gauge-chart'
 
 const chartStyle = {
     width: 400,
   }
 const Results = () => {
+    // console.log(useLocation().state)
+    // console.log("choice1" + useLocation().state.choices[0].artist)
+    // console.log("answer1" + useLocation().state.answers[0])
+    // console.log("choice2" + useLocation().state.choices[1].artist)
+    // console.log("answer2" + useLocation().state.answers[1])
+    // console.log("choice3" + useLocation().state.choices[2].artist)
+    // console.log("answer3" + useLocation().state.answers[2])
+    console.log(useLocation().state.choices[0].artist == useLocation().state.answers[0])
+    let score = 0;
+    for(let i = 0;i < useLocation().state.numSongs;i++) {
+        if(useLocation().state.choices[i].artist == useLocation().state.answers[i]) {
+            score = score + 1;
+        }
+    }
+    score = (score / useLocation().state.numSongs);
     return(
         <div>
             <h1>You scored</h1>
             <GaugeChart id="gauge-chart1" 
             textColor="black"
+            percent={score} 
             style={chartStyle}
             colors={['#FF0000', '#FFFF00', '#00FF00']}
             />
