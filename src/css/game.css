@@ -1,0 +1,17 @@
+.artists, 
+.song-title{
+    padding: 0% !important;
+}
+
+.audio{
+    background-color: rgb(28, 28, 133);
+    color: white;
+    width: 400px;
+    height: 50px;
+}
+
+.music{
+    border: solid white;
+    border-radius: 50% !important;
+    background-color: darkblue;
+}

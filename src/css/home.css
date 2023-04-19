@@ -1,0 +1,23 @@
+.main {
+    height: 100vh !important;
+    width: 100%
+}
+
+.vertical-align{
+    margin-top: 30px;
+}
+
+.errfont{
+    color: red
+}
+
+.offscreen {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
