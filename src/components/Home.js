@@ -34,7 +34,7 @@ const Home = () => {
     setConfigLoading(true)
     const response = await fetchFromSpotify({
       token: token,
-      endpoint: "search?type=track&limit=10&q=genre:" + selectedGenre
+      endpoint: "search?type=track&limit=20&q=genre:" + selectedGenre
     })
       .then(response => {
         //console.log(response)
