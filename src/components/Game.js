@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import { Howl } from 'howler';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faCirclePause } from '@fortawesome/free-solid-svg-icons';
@@ -66,7 +67,7 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                                     key={idx}
                                     id={`${index}${idx}`}
                                     type="radio"
-                                    variant={idx % 2 ? 'outline-success' : 'outline-danger'}
+                                    variant={'outline-success'}
                                     name={`radio-${index}`}
                                     value={artist.artist}
                                     checked={radioValue[`${index}`] == artist.artist}
@@ -89,8 +90,11 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                 </div>
 
             ))}
-
+            <Link to={{ pathname: "/results", state: {choices: filteredSongs.slice(0, noOfSongs), 
+                answers: radioValue, numSongs: noOfSongs, numArtist: noOfArtists}}}>
             <button>Submit</button>
+            </Link>
+            
             
 
         </div>
