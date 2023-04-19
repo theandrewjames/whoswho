@@ -4,19 +4,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlay, faCirclePause } from '@fortawesome/free-solid-svg-icons';
 const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
 
-    const copyArr = [...songs];
+    
     const [currentSong, setCurrentSong] = useState('');
     const [thisHowl, setThisHowl] = useState({});
     const [droppedDivs, setDroppedDivs] = useState([]);
+    const [filteredSongs, setFilteredSongs] = useState([]);
 
-    const randomSongs = [];
-    let randomSong;
-    for (let i = 0; i < noOfArtists; i++) {
-        randomSong = copyArr[Math.floor(copyArr.length * Math.random())];
-        let index = copyArr.indexOf(randomSong);
-        randomSongs.push(randomSong);
-        copyArr.splice(index, 1);
-    }
+      if (filteredSongs.length === 0) { 
+        const newFilteredSongs = songs.sort((a, b) => 0.5 - Math.random()).slice(0, 4);
+        setFilteredSongs(newFilteredSongs);
+      }
+    
+    // const randomSongs = [];
+    // let randomSong;
+    // for (let i = 0; i < noOfArtists; i++) {
+    //     randomSong = copyArr[Math.floor(copyArr.length * Math.random())];
+    //     let index = copyArr.indexOf(randomSong);
+    //     randomSongs.push(randomSong);
+    //     copyArr.splice(index, 1);
+    // }
     //console.log("This is random songs: ", randomSongs);
 
     // const randomImgs = randomSongs.map((s) => s.image)
@@ -62,8 +68,9 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
     return (
         <div>
             <h3>Game Page</h3>
-            {randomSongs.map((song, index) => (
+            {filteredSongs.slice(0, noOfSongs).map((song, index) => (
                 <div style={{ width: '400px' }}>
+                    {song.song}
                     <div
                         draggable
                         onDragStart={(e) => {
@@ -82,16 +89,18 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                             })
                             setThisHowl(thisSound);
                             thisSound.play()
+
                         }}>
                             <FontAwesomeIcon key={index} icon={faCirclePlay} />
                         </button>
 
                         <button onClick={() => {
                             console.log("I was clicked")
-                            thisHowl.pause()
+                            Howler.stop()
                         }}>
                             <FontAwesomeIcon icon={faCirclePause} />
                         </button>
+                        <label>{song.song}</label>
                     </div>
 
                 </div>
@@ -104,12 +113,13 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                     droppable='true'
                     onDragOver={(e) => dragOver(e)}
                     onDrop={(e) => dragDropped(e)}
-                    style={{ height: '800px', width: '400px', borderStyle: 'solid', borderColor: 'black' }}>
-                    {/* {randomSongs.map((song, idx) => {
+                    style={{ height: '800px', width: '300px', borderStyle: 'solid', borderColor: 'black' }}>
+                    { filteredSongs.slice(0, noOfArtists).map((song, idx) => {
                         return (<div>
-                            <img src={`${song.image}`} alt={`${song.artist} image`} />
+                            <label>{song.artist}</label>
+                            {/* <img src={`${song.image}`} alt={`${song.artist} image`} style={{ width: '60%' }}  /> */}
                         </div>)
-                    })} */}
+                    })} 
 
                     {droppedDivs.map((div, index) => {
                         return (
@@ -131,7 +141,7 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                                         }}>
                                             <FontAwesomeIcon key={index} icon={faCirclePlay} />
                                         </button>
-
+                                        
                                         <button onClick={() => {
                                             console.log("I was clicked")
                                             thisHowl.pause()
