@@ -1,13 +1,14 @@
 import { Fragment } from "react";
 import React from 'react';
 import { Link, ReactDOM, useLocation} from "react-router-dom";
+import Table from 'react-bootstrap/Table';
 import GaugeChart from 'react-gauge-chart'
 
 const chartStyle = {
     width: 400,
   }
 const Results = () => {
-    // console.log(useLocation().state)
+     console.log(useLocation().state.choices)
     // console.log("choice1" + useLocation().state.choices[0].artist)
     // console.log("answer1" + useLocation().state.answers[0])
     // console.log("choice2" + useLocation().state.choices[1].artist)
@@ -31,6 +32,29 @@ const Results = () => {
             style={chartStyle}
             colors={['#FF0000', '#FFFF00', '#00FF00']}
             />
+            <Table  bordered hover>
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Song</th>
+                <th>Correct Artist</th>
+                <th>Answer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {useLocation().state.choices.map((song, index) => {
+                    return(
+                        <tr>
+                    <td>{index + 1}</td>
+                    <td>{song.song}</td>
+                    <td>{song.artist}</td>
+                    <td>{useLocation().state.answers[index]}</td>
+                  </tr>
+                    )
+                    
+                })}
+            </tbody>
+            </Table>
             <Link to='/'>
                 <button>Home</button>
             </Link>
