@@ -27,7 +27,6 @@ const Home = () => {
       token: t,
       endpoint: 'recommendations/available-genre-seeds'
     })
-    //console.log(response)
     setGenres(response.genres)
     setConfigLoading(false);
 
@@ -39,7 +38,6 @@ const Home = () => {
       endpoint: "search?type=track&limit=20&q=genre:" + selectedGenre
     })
       .then(response => {
-        //console.log(response)
         const songArray = []
         for (let i = 0; i < response.tracks.items.length; i++) {
           songArray.push(
@@ -62,19 +60,21 @@ const Home = () => {
 
   useEffect(() => {
     setAuthLoading(true)
-
+    setSelectedGenre(localStorage.getItem('genre'))
+    setNoOfSongs(localStorage.getItem('numSongs'))
+    setNoOfArtist(localStorage.getItem('numArtists'))
     const storedTokenString = localStorage.getItem(TOKEN_KEY)
     if (storedTokenString) {
       const storedToken = JSON.parse(storedTokenString)
       if (storedToken.expiration > Date.now()) {
-        console.log('Token found in localstorage')
+        //console.log('Token found in localstorage')
         setAuthLoading(false)
         setToken(storedToken.value)
         loadGenres(storedToken.value)
         return
       }
     }
-    console.log('Sending request to AWS endpoint')
+    //console.log('Sending request to AWS endpoint')
     request(AUTH_ENDPOINT).then(({ access_token, expires_in }) => {
       const newToken = {
         value: access_token,
@@ -102,6 +102,9 @@ const Home = () => {
 
     setErrMsg('')
     loadSongsArtists()
+    localStorage.setItem('genre', selectedGenre)
+    localStorage.setItem('numSongs', noOfSongs)
+    localStorage.setItem('numArtists', noOfArtists)
     setSubmit(true)
   }
 
