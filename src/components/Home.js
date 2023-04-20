@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Route, Link, ReactDOM } from 'react-router-dom'
 import fetchFromSpotify, { request } from '../services/api'
 import Game from './Game';
+import { Container, Row, Jumbotron } from 'react-bootstrap';
+import '../css/home.css'
 
 const AUTH_ENDPOINT =
   'https://nuod0t2zoe.execute-api.us-east-2.amazonaws.com/FT-Classroom/spotify-auth-token'
@@ -39,7 +41,7 @@ const Home = () => {
       .then(response => {
         //console.log(response)
         const songArray = []
-        for (let i = 0; i < response.tracks.items.length; i++) { 
+        for (let i = 0; i < response.tracks.items.length; i++) {
           songArray.push(
             {
               artist: response.tracks.items[i].artists[0].name,
@@ -93,6 +95,11 @@ const Home = () => {
       return;
     }
 
+    if (noOfSongs > noOfArtists) {
+      setErrMsg('The No. of Songs cannot be greater than the No. of Artists.')
+      return;
+    }
+
     setErrMsg('')
     loadSongsArtists()
     setSubmit(true)
@@ -105,53 +112,75 @@ const Home = () => {
   return (
     <>
       {submit ? (
-        <div>
+        <Container>
           <Game songs={songs} selectedGenre={selectedGenre} noOfSongs={noOfSongs} noOfArtists={noOfArtists} />
-        </div>
+        </Container>
       ) : (
-        <div>
-          <div>
-            Genre:
-            <select
-              value={selectedGenre}
-              onChange={event => setSelectedGenre(event.target.value)}
-            >
-              <option value='' />
-              {genres.map(genre => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-            
+        <Container>
+          <div className="p-4 text-center">
+            <h2 >Welcome to Who's Who</h2>
+            <p>
+              This is a simple hero unit, a simple jumbotron-style component for calling extra
+              attention to featured content or information.
+            </p>
+
+            <hr className="my-4" />
           </div>
-          <div>
-            # of Songs:
-            <select
-              value={noOfSongs}
-              onChange={event => setNoOfSongs(Number(event.target.value))}
-            >
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-            </select>
+
+          <div className='card d-flex justify-content-center col-md-6 mx-auto'>
+            <h3 className='card-header text-center'> Choose Your Settings</h3>
+            <div className='vertical-align p-4'>
+              <div>
+                <h5>Genre:</h5>
+                <select
+                  className='form-select mb-3'
+                  value={selectedGenre}
+                  onChange={event => setSelectedGenre(event.target.value)}
+                >
+                  <option value='' />
+                  {genres.map(genre => (
+                    <option key={genre} value={genre}>
+                      {genre}
+                    </option>
+                  ))}
+                </select>
+
+              </div>
+              <div>
+                <h5># of Songs:</h5>
+                <select
+                  className='form-select mb-3'
+                  value={noOfSongs}
+                  onChange={event => setNoOfSongs(Number(event.target.value))}
+                >
+                  <option value={1}>1</option>
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                </select>
+              </div>
+              <div>
+                <h5># of Artists:</h5>
+                <select
+                  className='form-select mb-3'
+                  value={noOfArtists}
+                  onChange={event => setNoOfArtist(Number(event.target.value))}
+                >
+                  <option value={2}>2</option>
+                  <option value={3}>3</option>
+                  <option value={4}>4</option>
+                </select>
+              </div>
+              <div className='text-center'>
+                <p
+                  className={errMsg ? 'errfont' : ''}
+                >
+                  {errMsg}
+                </p>
+                <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Submit</button>
+              </div>
+            </div>
           </div>
-          <div>
-            # of Artists:
-            <select
-              value={noOfArtists}
-              onChange={event => setNoOfArtist(Number(event.target.value))}
-            >
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-            </select>
-          </div>
-          <div>
-            <p>{errMsg}</p>
-            <button onClick={(e) => handleSubmit(e)}>Submit</button>
-          </div>
-        </div>
+        </Container>
       )}
 
     </>
