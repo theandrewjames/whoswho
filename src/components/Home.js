@@ -12,12 +12,12 @@ const TOKEN_KEY = 'whos-who-access-token'
 const Home = () => {
   const [genres, setGenres] = useState([])
   const [songs, setSongs] = useState([])
-  const [selectedGenre, setSelectedGenre] = useState('')
+  const [selectedGenre, setSelectedGenre] = useState(localStorage.getItem('genre') == null ? localStorage.setItem('genre', 'Please choose a genre') : localStorage.getItem('genre'))
   const [authLoading, setAuthLoading] = useState(false)
   const [configLoading, setConfigLoading] = useState(false)
   const [token, setToken] = useState('')
-  const [noOfSongs, setNoOfSongs] = useState(1)
-  const [noOfArtists, setNoOfArtist] = useState(2)
+  const [noOfSongs, setNoOfSongs] = useState(localStorage.getItem('numSongs') == null ? localStorage.setItem('numSongs', 1) : localStorage.getItem('numSongs'))
+  const [noOfArtists, setNoOfArtist] = useState(localStorage.getItem('numArtists') == null ? localStorage.setItem('numArtists', 2) : localStorage.getItem('numArtists'))
   const [errMsg, setErrMsg] = useState('')
   const [submit, setSubmit] = useState(false)
 
@@ -60,9 +60,9 @@ const Home = () => {
 
   useEffect(() => {
     setAuthLoading(true)
-    setSelectedGenre(localStorage.getItem('genre'))
-    setNoOfSongs(localStorage.getItem('numSongs'))
-    setNoOfArtist(localStorage.getItem('numArtists'))
+    // setSelectedGenre(localStorage.getItem('genre'))
+    // setNoOfSongs(localStorage.getItem('numSongs'))
+    // setNoOfArtist(localStorage.getItem('numArtists'))
     const storedTokenString = localStorage.getItem(TOKEN_KEY)
     if (storedTokenString) {
       const storedToken = JSON.parse(storedTokenString)
