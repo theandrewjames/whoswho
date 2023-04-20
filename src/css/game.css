@@ -7,7 +7,8 @@
     background-color: rgb(28, 28, 133);
     color: white;
     width: 400px;
-    height: 50px;
+    /* height: 50px; */
+    align-items: center;
 }
 
 .music{
