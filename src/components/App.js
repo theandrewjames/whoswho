@@ -3,13 +3,17 @@ import { Route } from 'react-router-dom'
 import Results from './Results'
 import '../css/home.css'
 import Home from './Home'
-
+import { Header } from './Header'
+import { Footer } from './Footer'
 const App = () => (
+
   <div className='main'>
-    <Route path='/play'></Route>
+    <Header/>
     <Route path='/results' render={() => <Results></Results>}></Route>
     <Route exact path='/' component={Home} />
+    <Footer/>
   </div>
+
 )
 
 export default App

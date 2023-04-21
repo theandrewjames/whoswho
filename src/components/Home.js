@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Route, Link, ReactDOM } from 'react-router-dom'
 import fetchFromSpotify, { request } from '../services/api'
 import Game from './Game';
-import { Container, Row, Jumbotron } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import '../css/home.css'
 
 const AUTH_ENDPOINT =
@@ -12,12 +12,12 @@ const TOKEN_KEY = 'whos-who-access-token'
 const Home = () => {
   const [genres, setGenres] = useState([])
   const [songs, setSongs] = useState([])
-  const [selectedGenre, setSelectedGenre] = useState(localStorage.getItem('genre') == null ? localStorage.setItem('genre', 'Please choose a genre') : localStorage.getItem('genre'))
+  const [selectedGenre, setSelectedGenre] = useState(localStorage.getItem('genre') == null ? 'Please select a genre' : localStorage.getItem('genre'))
   const [authLoading, setAuthLoading] = useState(false)
   const [configLoading, setConfigLoading] = useState(false)
   const [token, setToken] = useState('')
-  const [noOfSongs, setNoOfSongs] = useState(localStorage.getItem('numSongs') == null ? localStorage.setItem('numSongs', 1) : localStorage.getItem('numSongs'))
-  const [noOfArtists, setNoOfArtist] = useState(localStorage.getItem('numArtists') == null ? localStorage.setItem('numArtists', 2) : localStorage.getItem('numArtists'))
+  const [noOfSongs, setNoOfSongs] = useState(localStorage.getItem('numSongs') == null ? 1 : localStorage.getItem('numSongs'))
+  const [noOfArtists, setNoOfArtist] = useState(localStorage.getItem('numArtists') == null ? 2 : localStorage.getItem('numArtists'))
   const [errMsg, setErrMsg] = useState('')
   const [submit, setSubmit] = useState(false)
 
@@ -60,9 +60,6 @@ const Home = () => {
 
   useEffect(() => {
     setAuthLoading(true)
-    // setSelectedGenre(localStorage.getItem('genre'))
-    // setNoOfSongs(localStorage.getItem('numSongs'))
-    // setNoOfArtist(localStorage.getItem('numArtists'))
     const storedTokenString = localStorage.getItem(TOKEN_KEY)
     if (storedTokenString) {
       const storedToken = JSON.parse(storedTokenString)
@@ -120,18 +117,9 @@ const Home = () => {
         </Container>
       ) : (
         <Container>
-          <div className="p-4 text-center">
-            <h2 >Welcome to Who's Who</h2>
-            <p>
-              This is a simple hero unit, a simple jumbotron-style component for calling extra
-              attention to featured content or information.
-            </p>
-
-            <hr className="my-4" />
-          </div>
-
-          <div className='card d-flex justify-content-center col-md-6 mx-auto'>
-            <h3 className='card-header text-center'> Choose Your Settings</h3>
+        
+          <div className='card d-flex justify-content-center col-md-6 mx-auto border-success'>
+            <h3 className='card-header bg-success text-center' style={{color: 'white'}}> Choose Your Settings</h3>
             <div className='vertical-align p-4'>
               <div>
                 <h5>Genre:</h5>
@@ -179,7 +167,7 @@ const Home = () => {
                 >
                   {errMsg}
                 </p>
-                <button type="button" className="btn btn-primary" onClick={(e) => handleSubmit(e)}>Submit</button>
+                <button type="button" className="btn btn-success" onClick={(e) => handleSubmit(e)}>Play</button>
               </div>
             </div>
           </div>
