@@ -4,15 +4,35 @@
 }
 
 .audio{
-    background-color: rgb(28, 28, 133);
+    background-color: darkgreen;
     color: white;
     width: 400px;
-    /* height: 50px; */
     align-items: center;
 }
 
 .music{
     border: solid white;
     border-radius: 50% !important;
-    background-color: darkblue;
+    background-color: rgb(4, 126, 4);
+    
+}
+
+.whos-who{
+    font-family: 'DynaPuff', cursive;
+}
+
+@media screen and (max-width:996px) {
+    .guess-who-row{
+        flex-direction: column !important;
+        align-content: center !important;
+        margin-top: .9rem !important;
+    }
+}
+
+@media screen and (max-width:996px) {
+    .artist-div{
+        display: flex;
+        justify-content: center;
+        width: 400px !important;
+    }
 }

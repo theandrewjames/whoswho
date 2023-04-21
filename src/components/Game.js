@@ -7,12 +7,8 @@ import { Row } from 'react-bootstrap';
 import '../css/game.css'
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
-const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
+const Game = ({ noOfSongs, noOfArtists, songs }) => {
 
-
-    const [currentSong, setCurrentSong] = useState('');
-    const [thisHowl, setThisHowl] = useState({});
-    const [droppedDivs, setDroppedDivs] = useState([]);
     const [filteredSongs, setFilteredSongs] = useState([]);
 
     //Randomizes songs from API results and picks first 4 results since 4 is max # of artists
@@ -21,11 +17,6 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
         const newFilteredSongs = songs.sort((a, b) => 0.5 - Math.random()).slice(0, 4);
         setFilteredSongs(newFilteredSongs);
     }
-
-    // localStorage.setItem("selectedGenre", JSON.stringify(selectedGenre))
-    // localStorage.setItem("noOfSongs", noOfSongs)
-    // localStorage.setItem("noOfArtists", noOfArtists)
-
 
     const [radioValue, setRadioValue] = useState({});
 
@@ -36,36 +27,27 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
 
     return (
         <Row className='d-flex justify-content-around'>
-            <h3>Game Page</h3>
+            <h3 className=' whos-who text-center mb-5'>Guess Who...</h3>
             <div className='card p-2'>
                 {filteredSongs.slice(0, noOfSongs).map((song, index) => (
-                    <Row>
-                        <div className='col-md-6'>
+                    <Row className='guess-who-row'>
+                        {/* Audio Player Div */}
+                        <div className='col-md-6 '>
                             <div className='row d-flex justify-content-around p-1 rounded-3 audio mt-1 mx-auto'>
+                                {/* Song Title */}
                                 <div className='col-md-8 song-title align-items-center'>
                                     <h4>{song.song}</h4>
                                 </div>
-                                <div
-                                    className='row col-md-4'
-                                    draggable
-                                    onDragStart={(e) => {
-                                        setCurrentSong(song.previewUrl)
-                                        //console.log("this is current song", currentSong) not the same song
-                                        dragStarted(e, index)
-                                    }}
-                                // style={{ borderStyle: 'solid', borderColor: 'red' }}
-                                >
 
+                                {/* Audio Buttons */}
+                                <div className='row col-md-4'>
                                     <div className='col-sm-6'>
                                         <button className='music' onClick={() => {
-                                            setCurrentSong(song.previewUrl);
-                                            console.log("this is current song", song)
                                             const thisSound = new Howl({
                                                 src: [song.previewUrl],
                                                 html5: true,
                                                 preload: true,
                                             })
-                                            setThisHowl(thisSound);
                                             thisSound.play()
 
                                         }}>
@@ -75,21 +57,20 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
 
                                     <div className='col-sm-6'>
                                         <button className='music' onClick={() => {
-                                            console.log("I was clicked")
                                             Howler.stop()
                                         }}>
                                             <FontAwesomeIcon style={{ color: 'white' }} icon={faCirclePause} />
                                         </button>
                                     </div>
-                                    {/* <label>{song.song}</label> */}
                                 </div>
 
                             </div>
                         </div>
 
-                        <div className='col-md-6 mt-1'>
-
-                            <ButtonGroup className='d-flex' id={`bg-${index}`}>
+                        {/* Answer Buttons Div */}
+                        <div className='col-md-6 mt-1 artist-div'>
+                            
+                            <ButtonGroup id={`bg-${index}`}>
                                 {filteredSongs.slice(0, noOfArtists).map((artist, idx) => {
                                     return (
                                         <ToggleButton
@@ -128,7 +109,7 @@ const Game = ({ selectedGenre, noOfSongs, noOfArtists, songs }) => {
                         answers: radioValue, numSongs: noOfSongs, numArtist: noOfArtists
                     }
                 }}>
-                    <button className='btn btn-primary '>Submit</button>
+                    <button className='btn btn-success '>Submit</button>
                 </Link>
             </div>
 
