@@ -6,14 +6,14 @@ import Home from './Home'
 import { Header } from './Header'
 import { Footer } from './Footer'
 const App = () => (
-
+  <>
   <div className='main'>
     <Header/>
     <Route path='/results' render={() => <Results></Results>}></Route>
     <Route exact path='/' component={Home} />
-    <Footer/>
   </div>
-
+  <Footer/>
+  </>
 )
 
 export default App
