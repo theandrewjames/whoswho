@@ -9,7 +9,7 @@ export const Footer = () => {
                 <div className="text-center contact-div" >
                     Contact Us <br/>
                     Andrew Velasquez <a href={'https://github.com/theandrewjames'} target='_blank' rel='noopener noreferrer'><FontAwesomeIcon className='contact' icon={faGlobe}/></a> <br/>
-                    Jasmine Daniels <a to={'https://github.com/JasmineDaniels'} target='_blank' rel='noopener noreferrer'><FontAwesomeIcon className='contact' icon={faGlobe}/></a>
+                    Jasmine Daniels <a href={'https://github.com/JasmineDaniels'} target='_blank' rel='noopener noreferrer'><FontAwesomeIcon className='contact' icon={faGlobe}/></a>
                 </div>
             </footer>
         </div>
